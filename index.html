@@ -1,226 +1,138 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#5546c7">
   <title>Student Hub | Student Management</title>
   <link rel="stylesheet" href="style.css">
   <script src="app.js" defer></script>
 </head>
 <body>
-
   <!-- LOGIN PAGE -->
   <section id="loginPage" class="login-page">
     <div class="login-card">
+      <div class="brand-mark" aria-hidden="true">SH</div>
       <h1>Student Hub</h1>
       <p>Teacher Portal · Student Management System</p>
-
       <form id="loginForm">
-        <label>Email Address</label>
+        <label for="loginEmail">Email Address</label>
         <input id="loginEmail" type="email" placeholder="Enter email" required>
-
-        <label>Password</label>
+        <label for="loginPassword">Password</label>
         <input id="loginPassword" type="password" placeholder="Enter password" required>
-
-        <p id="loginError" class="error"></p>
+        <p id="loginError" class="error" role="alert"></p>
         <button type="submit">Login</button>
       </form>
-
-      <p class="demo-note">
-        Demo login: teacher@school.edu<br>
-        Password: teacher123
-      </p>
+      <p class="demo-note">Demo login: teacher@school.edu<br>Password: teacher123</p>
     </div>
   </section>
 
   <!-- MAIN APPLICATION -->
   <div id="app" class="app hidden">
-
     <aside class="sidebar">
-      <h2>Student Hub</h2>
-      <p class="sidebar-subtitle">Teacher Portal</p>
-
-      <nav>
+      <div class="brand"><div class="brand-mark" aria-hidden="true">SH</div><div><h2>Student Hub</h2><p class="sidebar-subtitle">Teacher Portal</p></div></div>
+      <nav aria-label="Main navigation">
         <button class="nav-link active" data-page="dashboard">Dashboard</button>
         <button class="nav-link" data-page="students">All Students</button>
         <button class="nav-link" data-page="add">Add Student</button>
         <button class="nav-link" data-page="search">Search Student</button>
         <button class="nav-link" data-page="update">Update Student</button>
         <button class="nav-link" data-page="delete">Delete Student</button>
+        <button class="nav-link" data-page="contacts">Contact Management</button>
+        <button class="nav-link" data-page="fees">Fee Management</button>
+        <button class="nav-link" data-page="attendance">Attendance</button>
         <button class="nav-link" data-page="linkedlist">Linked List</button>
         <button class="nav-link" data-page="guide">About Project</button>
       </nav>
-
       <button id="logoutButton" class="logout-button">Logout</button>
     </aside>
 
     <main class="main-content">
-      <header class="topbar">
-        <h2 id="topbarTitle">Dashboard</h2>
-        <span>Teacher Workspace</span>
-      </header>
+      <header class="topbar"><div><span class="eyebrow">STUDENT HUB</span><h2 id="topbarTitle">Dashboard</h2></div><span class="workspace-label">Teacher Workspace</span></header>
 
       <!-- DASHBOARD -->
       <section id="page-dashboard" class="page">
-        <h1>Welcome to Student Hub!</h1>
-        <p>Manage student records easily.</p>
-
+        <div class="page-intro"><div><span class="eyebrow">OVERVIEW</span><h1>Welcome to Student Hub!</h1><p>Manage student records, fees, contacts and attendance in one place.</p></div></div>
         <div class="stats">
-          <article class="stat-card">
-            <h3>Total Students</h3>
-            <strong id="totalStudents">0</strong>
-          </article>
-          <article class="stat-card">
-            <h3>Average Marks</h3>
-            <strong id="averageMarks">0</strong>
-          </article>
-          <article class="stat-card">
-            <h3>Top Performer</h3>
-            <strong id="topPerformer">—</strong>
-            <span id="topPerformerMarks">0 marks</span>
-          </article>
+          <article class="stat-card"><span class="stat-icon">◎</span><h3>Total Students</h3><strong id="totalStudents">0</strong><span>Active records</span></article>
+          <article class="stat-card"><span class="stat-icon">✦</span><h3>Average Marks</h3><strong id="averageMarks">0</strong><span>Across all students</span></article>
+          <article class="stat-card"><span class="stat-icon">★</span><h3>Top Performer</h3><strong id="topPerformer">—</strong><span id="topPerformerMarks">No records</span></article>
+          <article class="stat-card"><span class="stat-icon">◷</span><h3>Average Attendance</h3><strong id="averageAttendance">0%</strong><span>Students with marked days</span></article>
         </div>
-
         <h2>Quick Actions</h2>
         <div class="quick-actions">
-          <button data-go="add">+ Add Student</button>
-          <button data-go="search">Search Student</button>
-          <button data-go="students">View Records</button>
+          <button data-go="add">+ Add Student</button><button class="button-secondary" data-go="contacts">Manage Contacts</button><button class="button-secondary" data-go="fees">Manage Fees</button><button class="button-secondary" data-go="attendance">Mark Attendance</button><button class="button-secondary" data-go="students">View Records</button>
         </div>
-
-        <h2>Recent Students</h2>
-        <div id="recentStudents"></div>
+        <h2>Recent Students</h2><div id="recentStudents" class="card-grid"></div>
       </section>
 
       <!-- ALL STUDENTS -->
       <section id="page-students" class="page hidden">
-        <h1>All Student Records</h1>
-        <input id="tableSearch" type="search" placeholder="Filter students...">
-        <p id="recordCount">0 records</p>
-
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Registration No.</th>
-                <th>Name</th>
-                <th>Marks</th>
-              </tr>
-            </thead>
-            <tbody id="studentTableBody"></tbody>
-          </table>
-        </div>
-        <p id="emptyStudents">No student records found.</p>
+        <div class="page-intro"><div><span class="eyebrow">RECORDS</span><h1>All Student Records</h1><p>Student profiles include academic, contact, fee and attendance details.</p></div></div>
+        <input id="tableSearch" class="search-input" type="search" placeholder="Filter by name or registration number..." aria-label="Filter students">
+        <p id="recordCount" class="muted">0 records</p>
+        <div class="table-wrap"><table><thead><tr><th>Registration No.</th><th>Name</th><th>Marks</th><th>Student Contact</th><th>Guardian</th><th>Fee Status</th><th>Attendance</th></tr></thead><tbody id="studentTableBody"></tbody></table></div>
+        <p id="emptyStudents" class="empty-state">No student records found.</p>
       </section>
 
       <!-- ADD STUDENT -->
       <section id="page-add" class="page hidden">
-        <h1>Add New Student</h1>
+        <div class="page-intro"><div><span class="eyebrow">STUDENT RECORDS</span><h1>Add New Student</h1><p>Enter academic details and optional student/guardian contact information.</p></div></div>
         <form id="addStudentForm" class="form-card">
-          <label>Registration Number</label>
-          <input id="addReg" required placeholder="Enter registration number">
-
-          <label>Student Name</label>
-          <input id="addName" required placeholder="Enter student name">
-
-          <label>Marks (0–100)</label>
-          <input id="addMarks" type="number" min="0" max="100" required>
-
-          <button type="submit">Add Student</button>
-          <p id="addMessage"></p>
+          <div class="form-grid"><div><label for="addReg">Registration Number</label><input id="addReg" required placeholder="e.g. STU-1001"></div><div><label for="addName">Student Name</label><input id="addName" required placeholder="Enter student name"></div><div><label for="addMarks">Marks (0–100)</label><input id="addMarks" type="number" min="0" max="100" step="any" required></div><div><label for="addMobile">Student Mobile</label><input id="addMobile" type="tel" autocomplete="tel" placeholder="Phone number"></div><div><label for="addEmail">Student Email</label><input id="addEmail" type="email" autocomplete="email" placeholder="student@example.com"></div><div><label for="addGuardian">Parent / Guardian Name</label><input id="addGuardian" placeholder="Guardian name"></div><div><label for="addGuardianPhone">Guardian Contact Number</label><input id="addGuardianPhone" type="tel" placeholder="Phone number"></div></div>
+          <button type="submit">Add Student</button><p id="addMessage" class="form-message" aria-live="polite"></p>
         </form>
       </section>
 
       <!-- SEARCH STUDENT -->
       <section id="page-search" class="page hidden">
-        <h1>Search Student</h1>
-        <form id="searchStudentForm" class="form-card">
-          <label>Registration Number</label>
-          <input id="searchReg" required placeholder="Enter registration number">
-          <button type="submit">Search</button>
-        </form>
-        <div id="searchResult"></div>
+        <div class="page-intro"><div><span class="eyebrow">LOOKUP</span><h1>Search Student</h1><p>Find a student profile using their registration number.</p></div></div>
+        <form id="searchStudentForm" class="form-card"><label for="searchReg">Registration Number</label><input id="searchReg" required placeholder="Enter registration number"><button type="submit">Search</button></form>
+        <div id="searchResult" class="result-area"></div>
       </section>
 
       <!-- UPDATE STUDENT -->
       <section id="page-update" class="page hidden">
-        <h1>Update Student</h1>
-        <form id="updateLookupForm" class="form-card">
-          <label>Registration Number</label>
-          <input id="updateLookupReg" required>
-          <button type="submit">Find Student</button>
-          <p id="updateLookupMessage"></p>
-        </form>
-
-        <div id="updateEditor" class="hidden">
-          <form id="updateStudentForm" class="form-card">
-            <input id="updateOriginalReg" type="hidden">
-
-            <label>Registration Number</label>
-            <input id="updateReg" required>
-
-            <label>Student Name</label>
-            <input id="updateName" required>
-
-            <label>Marks</label>
-            <input id="updateMarks" type="number" min="0" max="100" required>
-
-            <button type="submit">Save Changes</button>
-            <button type="button" id="cancelUpdate">Cancel</button>
-            <p id="updateMessage"></p>
-          </form>
-        </div>
+        <div class="page-intro"><div><span class="eyebrow">EDIT RECORDS</span><h1>Update Student</h1><p>Update the core academic details. Use Contact Management to edit contact records.</p></div></div>
+        <form id="updateLookupForm" class="form-card"><label for="updateLookupReg">Registration Number</label><input id="updateLookupReg" required placeholder="Enter registration number"><button type="submit">Find Student</button><p id="updateLookupMessage" class="form-message"></p></form>
+        <div id="updateEditor" class="hidden"><form id="updateStudentForm" class="form-card"><input id="updateOriginalReg" type="hidden"><div class="form-grid"><div><label for="updateReg">Registration Number</label><input id="updateReg" required></div><div><label for="updateName">Student Name</label><input id="updateName" required></div><div><label for="updateMarks">Marks</label><input id="updateMarks" type="number" min="0" max="100" step="any" required></div></div><button type="submit">Save Changes</button><button type="button" id="cancelUpdate" class="button-secondary">Cancel</button><p id="updateMessage" class="form-message"></p></form></div>
       </section>
 
       <!-- DELETE STUDENT -->
-      <section id="page-delete" class="page hidden">
-        <h1>Delete Student</h1>
-        <form id="deleteLookupForm" class="form-card">
-          <label>Registration Number</label>
-          <input id="deleteLookupReg" required>
-          <button type="submit">Find Student</button>
-        </form>
-        <div id="deleteResult"></div>
+      <section id="page-delete" class="page hidden"><div class="page-intro"><div><span class="eyebrow">RECORDS</span><h1>Delete Student</h1><p>Deleting a student also removes their fee and attendance records.</p></div></div><form id="deleteLookupForm" class="form-card"><label for="deleteLookupReg">Registration Number</label><input id="deleteLookupReg" required><button type="submit">Find Student</button></form><div id="deleteResult" class="result-area"></div></section>
+
+      <!-- CONTACT MANAGEMENT -->
+      <section id="page-contacts" class="page hidden">
+        <div class="page-intro"><div><span class="eyebrow">STUDENT DIRECTORY</span><h1>Contact Management</h1><p>View and update student and parent/guardian contact information.</p></div></div>
+        <form id="contactLookupForm" class="form-card compact-card"><label for="contactLookupReg">Registration Number</label><input id="contactLookupReg" required placeholder="Find a student to edit contacts"><button type="submit">Find Student</button><p id="contactLookupMessage" class="form-message"></p></form>
+        <div id="contactEditor" class="hidden"><form id="contactForm" class="form-card"><input id="contactOriginalReg" type="hidden"><h2 id="contactStudentHeading">Student Contact Details</h2><div class="form-grid"><div><label for="contactMobile">Student Mobile</label><input id="contactMobile" type="tel"></div><div><label for="contactEmail">Student Email</label><input id="contactEmail" type="email"></div><div><label for="contactGuardian">Parent / Guardian Name</label><input id="contactGuardian"></div><div><label for="contactGuardianPhone">Guardian Contact Number</label><input id="contactGuardianPhone" type="tel"></div></div><button type="submit">Save Contact Details</button><p id="contactMessage" class="form-message"></p></form></div>
+        <h2 class="section-heading">Student Contacts</h2><div id="contactDirectory" class="card-grid"></div>
+      </section>
+
+      <!-- FEE MANAGEMENT -->
+      <section id="page-fees" class="page hidden">
+        <div class="page-intro"><div><span class="eyebrow">FINANCE</span><h1>Fee Management</h1><p>Set course fees and record cumulative payments for each student.</p></div></div>
+        <div class="stats compact-stats"><article class="stat-card"><h3>Total Course Fees</h3><strong id="feeTotalAll">0</strong></article><article class="stat-card"><h3>Total Paid</h3><strong id="feePaidAll">0</strong></article><article class="stat-card"><h3>Total Pending</h3><strong id="feePendingAll">0</strong></article></div>
+        <form id="feeForm" class="form-card"><h2>Update Fee Record</h2><label for="feeStudent">Student</label><select id="feeStudent" required></select><div class="form-grid"><div><label for="feeTotal">Total Course Fee</label><input id="feeTotal" type="number" min="0" step="0.01" required placeholder="0.00"></div><div><label for="feePaid">Paid Fee (cumulative)</label><input id="feePaid" type="number" min="0" step="0.01" required placeholder="0.00"></div></div><p class="helper-text">Pending fee is calculated automatically as total fee minus paid fee.</p><button type="submit">Save Fee Payment</button><p id="feeMessage" class="form-message"></p></form>
+        <h2 class="section-heading">Fee Records</h2><div class="table-wrap"><table><thead><tr><th>Registration No.</th><th>Student</th><th>Total Fee</th><th>Paid</th><th>Pending</th><th>Status</th></tr></thead><tbody id="feeTableBody"></tbody></table></div><p id="emptyFees" class="empty-state">No fee records yet. Add a student's fee above.</p>
+      </section>
+
+      <!-- ATTENDANCE -->
+      <section id="page-attendance" class="page hidden">
+        <div class="page-intro"><div><span class="eyebrow">CLASSROOM</span><h1>Attendance Management</h1><p>Record attendance by date and review each student's attendance history.</p></div></div>
+        <form id="attendanceForm" class="form-card"><h2>Mark Attendance</h2><div class="form-grid"><div><label for="attendanceStudent">Student</label><select id="attendanceStudent" required></select></div><div><label for="attendanceDate">Date</label><input id="attendanceDate" type="date" required></div><div><label for="attendanceStatus">Attendance</label><select id="attendanceStatus" required><option value="Present">Present</option><option value="Absent">Absent</option></select></div></div><p class="helper-text">Saving again for the same student and date updates that day's status.</p><button type="submit">Save Attendance</button><p id="attendanceMessage" class="form-message"></p></form>
+        <div class="history-heading"><div><h2>Student Attendance History</h2><p class="muted">Working days count dates with an attendance record for this student.</p></div><div class="history-filter"><label for="historyStudent">Select Student</label><select id="historyStudent"></select></div></div>
+        <div class="stats compact-stats"><article class="stat-card"><h3>Total Working Days</h3><strong id="workingDays">0</strong></article><article class="stat-card"><h3>Present Days</h3><strong id="presentDays">0</strong></article><article class="stat-card"><h3>Absent Days</h3><strong id="absentDays">0</strong></article><article class="stat-card"><h3>Attendance</h3><strong id="studentAttendancePercent">0%</strong></article></div>
+        <div class="table-wrap"><table><thead><tr><th>Date</th><th>Status</th></tr></thead><tbody id="attendanceHistoryBody"></tbody></table></div><p id="emptyAttendance" class="empty-state">No attendance has been recorded for this student.</p>
       </section>
 
       <!-- LINKED LIST -->
-      <section id="page-linkedlist" class="page hidden">
-        <h1>Linked List Visualization</h1>
-        <p>View the student records as connected nodes.</p>
-        <div id="linkedListCanvas"></div>
-        <p>Head: <strong id="listHead">NULL</strong></p>
-        <p>Number of nodes: <strong id="listNodeCount">0</strong></p>
-      </section>
+      <section id="page-linkedlist" class="page hidden"><div class="page-intro"><div><span class="eyebrow">DATA STRUCTURES</span><h1>Linked List Visualization</h1><p>View student records as connected nodes. New records and deletions update the list.</p></div></div><div id="linkedListCanvas"></div><p>Head: <strong id="listHead">NULL</strong></p><p>Number of nodes: <strong id="listNodeCount">0</strong></p></section>
 
       <!-- PROJECT GUIDE -->
-      <section id="page-guide" class="page hidden">
-        <h1>About Student Hub</h1>
-        <p>Student Hub is a Student Record Management System.</p>
-        <h2>Data Structures Used</h2>
-        <ul>
-          <li>Singly Linked List</li>
-          <li>Searching</li>
-          <li>Insertion</li>
-          <li>Deletion</li>
-          <li>Updating records</li>
-        </ul>
-        <p>This website is a demonstration interface for the mini project.</p>
-      </section>
+      <section id="page-guide" class="page hidden"><div class="page-intro"><div><span class="eyebrow">ABOUT</span><h1>About Student Hub</h1><p>One workspace for student records and classroom administration.</p></div></div><div class="guide-card"><h2>Modules</h2><ul><li>Student record creation, search, update and deletion</li><li>Contact directory for students and guardians</li><li>Fee tracking with automatic pending balance and payment status</li><li>Date-based attendance recording and student history</li><li>Singly linked list visualization</li></ul><h2>Data storage</h2><p>Records are saved in this browser using local storage and remain available on this device/browser after reload. This static demo does not synchronize data between devices or users.</p></div></section>
     </main>
   </div>
-
-  <!-- NOTIFICATION -->
-  <div id="toast" class="toast"></div>
-
-  <!-- CONFIRMATION DIALOG -->
-  <dialog id="confirmDialog">
-    <h2 id="confirmTitle">Confirm Action</h2>
-    <p id="confirmText">Are you sure?</p>
-    <button id="confirmCancel" type="button">Cancel</button>
-    <button id="confirmAccept" type="button">Confirm</button>
-  </dialog>
-
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 </body>
 </html>
-
